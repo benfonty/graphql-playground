@@ -1,0 +1,6 @@
+{ 
+    commands(ownerId: "titi") { 
+        id 
+        createdAt 
+    } 
+}

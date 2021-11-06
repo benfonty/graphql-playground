@@ -1,0 +1,3 @@
+{
+    "query": "{ commands(ownerId: \"titi\") { id createdAt } }"
+}
