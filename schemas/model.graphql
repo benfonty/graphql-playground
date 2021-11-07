@@ -1,5 +1,3 @@
-scalar DateTime
-
 type Command {
   ownerId: String!
   id: String!
@@ -14,8 +12,4 @@ type Workflow {
   id: String!
   startedAt: DateTime
   endedAt: DateTime
-}
-
-type Query {
-  commands(ownerId: String): [Command]!
 }

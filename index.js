@@ -1,7 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server');
-const { GraphQLScalarType, Kind } = require('graphql');
 const { loadSchema } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+const { resolver: dateTimeResolver } = require('./resolvers/dateTimeResolver');
+const { resolver: queryResolver } = require('./resolvers/queryResolver');
+const merge =  require('lodash/merge');
 
 // TODO:
 // Get the def from external file
@@ -14,62 +16,12 @@ const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 
 
 
-loadSchema('./schema.graphql', { 
+loadSchema('./schemas/*.graphql', { 
     loaders: [
         new GraphQLFileLoader()
     ]
-}).then( typeDefs => {
-    const checkStringCompatibleDateTime = (value) => {
-        var date = new Date(Date.parse(value.replace("T", " ")));
-        if (date === NaN) {
-            throw new UserInputError("Provided value is not an IS8601 date");
-        }
-        return date.toISOString();
-    };
-    
-    const dateTimeScalarResolver = new GraphQLScalarType({
-        name: 'DateTime',
-        description: 'DateTime custom scalar type',
-        serialize(value) { // backend response => json value for query response
-          return checkStringCompatibleDateTime(value); // the datetime is stored as a ISO 8601 string.
-        },
-        parseValue(value) { // as input in a var of the graphql query => backend representation
-          return checkStringCompatibleDateTime(value); // the datetime is stored as a ISO 8601 string.
-        },
-        parseLiteral(ast) { // as input directly in the graphql query => backend representation
-          if (ast.kind === Kind.STRING) {
-            return checkStringCompatibleDateTime(ast.value); 
-          }
-          throw new UserInputError("Provided value is not an IS8601 date");
-        },
-      });
-    
-    const resolvers = {
-        DateTime: dateTimeScalarResolver,
-        Query: {
-            commands: (obj, args, context, info) => {
-                console.log(obj);
-                console.log(args);
-                console.log(context)
-                //console.log(info);
-                if (args.ownerId && args.ownerId === "titi") {
-                    return [
-                        {
-                            ownerId: "toto",
-                            id: "titi",
-                            createdAt: new Date().toISOString()
-                        }
-                    ];
-                } else {
-                    return [];
-                }
-            }
-        }
-    };
-    const server = new ApolloServer({ typeDefs, resolvers});
-
-    return server.listen();
-}).then(({ url }) => {
+}).then( typeDefs => new ApolloServer({ typeDefs, resolvers: merge(dateTimeResolver, queryResolver)}).listen()
+).then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
 });
 
