@@ -1,0 +1,21 @@
+scalar DateTime
+
+type Command {
+  ownerId: String!
+  id: String!
+  createdAt: DateTime!
+  cancelled: Boolean
+  payload: String
+  workflows: [Workflow!]!
+}
+
+type Workflow {
+  commandId: String!
+  id: String!
+  startedAt: DateTime
+  endedAt: DateTime
+}
+
+type Query {
+  commands(ownerId: String): [Command]!
+}
