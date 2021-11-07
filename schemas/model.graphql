@@ -12,4 +12,5 @@ type Workflow {
   id: String!
   startedAt: DateTime
   endedAt: DateTime
+  operation: String!
 }

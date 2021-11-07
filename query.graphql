@@ -1,6 +1,10 @@
 { 
-    commands(ownerId: "titi") { 
+    commands(ownerId: "toto") { 
         id 
-        createdAt 
+        createdAt
+        workflows {
+            id
+            operation
+        }
     } 
 }
