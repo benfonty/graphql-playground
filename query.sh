@@ -9,4 +9,4 @@ graphqlQuery=$(cat $1 | sed 's/"/\\"/g' | tr -d '\n')
 
 echo "{\"query\": \"${graphqlQuery}\"}"
 
-curl -i -X POST --data "{\"query\": \"${graphqlQuery}\"}" -H "Content-Type: application/json" $url
+curl -X POST --data "{\"query\": \"${graphqlQuery}\"}" -H "Content-Type: application/json" $url  | jq .
