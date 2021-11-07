@@ -1,11 +1,13 @@
+const { UserInputError } = require('apollo-server');
 const { GraphQLScalarType, Kind } = require('graphql');
 
 const checkStringCompatibleDateTime = (value) => {
-    var date = new Date(Date.parse(value.replace("T", " ")));
-    if (date === NaN) {
-        throw new UserInputError("Provided value is not an IS8601 date");
-    }
-    return date.toISOString();
+  try {
+    return new Date(Date.parse(value.replace("T", " "))).toISOString();
+  }
+  catch(error) { 
+    throw new UserInputError("Provided value is not an IS8601 date");
+  }
 };
 
 const dateTimeScalarResolver = new GraphQLScalarType({
