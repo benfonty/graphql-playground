@@ -6,7 +6,6 @@ const { resolver: queryResolver } = require('./resolvers/queryResolver');
 const merge =  require('lodash/merge');
 
 // TODO:
-// Get the def from external file
 // connect Command to the real data
 // search commands by the same parameters as the REST endpoint
 // connect Workflow
