@@ -8,9 +8,7 @@ const merge =  require('lodash/merge');
 // TODO:
 // connect Command to the real data
 // search commands by the same parameters as the REST endpoint
-// connect Workflow
 // add a subquery to the command to get the workflow by operation
-// add a runningWorkflow field to the command
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
 
 

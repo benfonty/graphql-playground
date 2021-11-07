@@ -5,6 +5,7 @@ type Command {
   cancelled: Boolean
   payload: String
   workflows: [Workflow!]!
+  runningWorkflow: Workflow
 }
 
 type Workflow {

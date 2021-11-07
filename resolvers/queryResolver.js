@@ -60,6 +60,14 @@ module.exports.resolver = {
             console.log(args);
             console.log(context)
             return workflows[obj.id].map(v => Object.assign({}, v, { commandId: obj.id }));
+        },
+        runningWorkflow: (obj, args, context, info) => {
+            console.log(obj);
+            console.log(args);
+            console.log(context)
+            return workflows[obj.id]
+                .map(v => Object.assign({}, v, { commandId: obj.id }))
+                .find(v => v.startedAt !== undefined && v.endedAt === undefined);
         }
     }
 };

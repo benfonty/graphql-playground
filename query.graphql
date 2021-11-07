@@ -2,9 +2,14 @@
     commands(ownerId: "toto") { 
         id 
         createdAt
+        runningWorkflow {
+            id
+        }
         workflows {
             id
             operation
+            startedAt
+            endedAt
         }
     } 
 }
