@@ -11,12 +11,13 @@ const merge =  require('lodash/merge');
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
 // add task and status
 
+const url = "http://localhost/provisioner/";
 
 loadSchema('./schemas/*.graphql', { 
     loaders: [
         new GraphQLFileLoader()
     ]
-}).then( typeDefs => new ApolloServer({ typeDefs, resolvers: merge(dateTimeResolver, queryResolver)}).listen()
+}).then( typeDefs => new ApolloServer({ typeDefs, resolvers: merge(dateTimeResolver, queryResolver), context: {url}}).listen()
 ).then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
 });

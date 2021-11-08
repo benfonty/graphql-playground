@@ -1,3 +1,7 @@
+const got = require('got');
+
+const DEBUG = 1
+
 const commands = [
     {
         ownerId: "toto",
@@ -43,38 +47,57 @@ const workflows = {
 module.exports.resolver = {
     Query: {
         commands: (obj, args, context, info) => {
-            console.log(obj);
-            console.log(args);
-            console.log(context)
-            //console.log(info);
+            let url = context.url + 'commands';
+
             let response = commands;
+            let separator = '?';
             if (args.ownerId) {
-                response = response.filter(v => v.ownerId === args.ownerId);
+                url = url + `${separator}ownerId=${args.ownerId}`;
+                separator = '&'
             }
             if (args.status) {
-                console.log("not used for now " + args.status)
+                url = url + `${separator}status=${args.status}`;
+                separator = '&'
             }
-            const size = args.size ? args.size : 10;
-            const page = args.page ? args.page : 0;
-            const indexBegin = page * size;
-            const indexEnd = indexBegin + size;
-            return response.slice(indexBegin, indexEnd);
+            if (args.page) {
+                url = url + `${separator}page=${Cpage}`;
+                separator = '&'
+            }
+            if (args.size) {
+                url = url + `${separator}size=${args.size}`;
+                separator = '&'
+            }
+            if (DEBUG) {
+                console.log(url);
+                return commands;
+            }
+            else {
+                return got (url, { json: true });
+            }
         }
     },
     Command: {
         workflows: (obj, args, context, info) => {
             console.log(obj);
             console.log(args);
-            console.log(context)
-            return workflows[obj.id] ? workflows[obj.id].map(v => Object.assign({}, v, { commandId: obj.id })) : [];
+            let url = context.url + `commands/${obj.id}/workflows`;
+            if (DEBUG) {
+                console.log("workflows " + url)
+                return [];
+            }
+            else {
+                return got (url, { json: true });
+            }
         },
         runningWorkflow: (obj, args, context, info) => {
             console.log(obj);
             console.log(args);
-            console.log(context)
-            return workflows[obj.id] ? workflows[obj.id]
-                .map(v => Object.assign({}, v, { commandId: obj.id }))
-                .find(v => v.startedAt !== undefined && v.endedAt === undefined) : [];
+            if (obj.workflows) {
+                return obj.workflows.find(v => v.startedAt !== undefined && v.endedAt === undefined);
+            }
+            else {
+                console.log("don't know how to do yet");
+            }
         }
     }
 };
