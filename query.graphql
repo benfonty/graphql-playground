@@ -1,5 +1,5 @@
 { 
-    commands(ownerId: "toto") { 
+    commands(size:2, page:0, status: ONGOING) { 
         id 
         createdAt
         runningWorkflow {

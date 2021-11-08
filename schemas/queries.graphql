@@ -1,3 +1,11 @@
+enum CommandStatus {
+  SUCCESS,
+  FAILURE,
+  ONGOING,
+  WAITING,
+  CANCELLED
+}
+
 type Query {
-  commands(ownerId: String): [Command]!
+  commands(ownerId: String, status: CommandStatus, page: Int, size: Int): [Command]!
 }

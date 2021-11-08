@@ -50,8 +50,15 @@ module.exports.resolver = {
             let response = commands;
             if (args.ownerId) {
                 response = response.filter(v => v.ownerId === args.ownerId);
-            } 
-            return response;
+            }
+            if (args.status) {
+                console.log("not used for now " + args.status)
+            }
+            const size = args.size ? args.size : 10;
+            const page = args.page ? args.page : 0;
+            const indexBegin = page * size;
+            const indexEnd = indexBegin + size;
+            return response.slice(indexBegin, indexEnd);
         }
     },
     Command: {
@@ -59,15 +66,15 @@ module.exports.resolver = {
             console.log(obj);
             console.log(args);
             console.log(context)
-            return workflows[obj.id].map(v => Object.assign({}, v, { commandId: obj.id }));
+            return workflows[obj.id] ? workflows[obj.id].map(v => Object.assign({}, v, { commandId: obj.id })) : [];
         },
         runningWorkflow: (obj, args, context, info) => {
             console.log(obj);
             console.log(args);
             console.log(context)
-            return workflows[obj.id]
+            return workflows[obj.id] ? workflows[obj.id]
                 .map(v => Object.assign({}, v, { commandId: obj.id }))
-                .find(v => v.startedAt !== undefined && v.endedAt === undefined);
+                .find(v => v.startedAt !== undefined && v.endedAt === undefined) : [];
         }
     }
 };

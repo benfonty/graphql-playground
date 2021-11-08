@@ -7,10 +7,9 @@ const merge =  require('lodash/merge');
 
 // TODO:
 // connect Command to the real data
-// search commands by the same parameters as the REST endpoint
 // add a subquery to the command to get the workflow by operation
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
-
+// add task and status
 
 
 loadSchema('./schemas/*.graphql', { 
