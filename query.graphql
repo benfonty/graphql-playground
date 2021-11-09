@@ -1,15 +1,20 @@
 { 
-    commands(size:2, page:0, status: ONGOING) { 
-        id 
-        createdAt
-        runningWorkflow {
-            id
-        }
-        workflows {
-            id
-            operation
-            startedAt
-            endedAt
+    commandsQuery(size:10, status: SUCCESS) {
+        size
+        page
+        commands {
+            id 
+            createdAt
+            ownerId
+            runningWorkflow {
+                id
+            }
+            workflows {
+                id
+                operation
+                startedAt
+                endedAt
+            }
         }
     } 
 }

@@ -6,6 +6,12 @@ enum CommandStatus {
   CANCELLED
 }
 
+type PageOfCommand {
+  commands: [Command!]!
+  page: Int!
+  size: Int!
+}
+
 type Query {
-  commands(ownerId: String, status: CommandStatus, page: Int, size: Int): [Command]!
+  commandsQuery(ownerId: String, status: CommandStatus, page: Int, size: Int): PageOfCommand!
 }

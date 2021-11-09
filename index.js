@@ -6,12 +6,11 @@ const { resolver: queryResolver } = require('./resolvers/queryResolver');
 const merge =  require('lodash/merge');
 
 // TODO:
-// connect Command to the real data
 // add a subquery to the command to get the workflow by operation
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
 // add task and status
 
-const url = "http://localhost/provisioner/";
+const url = "http://localhost:7785/provisioner/";
 
 loadSchema('./schemas/*.graphql', { 
     loaders: [

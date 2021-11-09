@@ -4,6 +4,7 @@ type Command {
   createdAt: DateTime!
   cancelled: Boolean
   payload: String
+  action: String!
   workflows: [Workflow!]!
   runningWorkflow: Workflow
 }

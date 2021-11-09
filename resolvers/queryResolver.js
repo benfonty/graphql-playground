@@ -1,6 +1,6 @@
 const got = require('got');
 
-const DEBUG = 1
+const DEBUG = 0
 
 const commands = [
     {
@@ -46,13 +46,13 @@ const workflows = {
 
 module.exports.resolver = {
     Query: {
-        commands: (obj, args, context, info) => {
+        commandsQuery: (_, args, context) => {
             let url = context.url + 'commands';
 
             let response = commands;
             let separator = '?';
             if (args.ownerId) {
-                url = url + `${separator}ownerId=${args.ownerId}`;
+                url = url + `${separator}tenantId=${args.ownerId}`;
                 separator = '&'
             }
             if (args.status) {
@@ -60,44 +60,53 @@ module.exports.resolver = {
                 separator = '&'
             }
             if (args.page) {
-                url = url + `${separator}page=${Cpage}`;
+                url = url + `${separator}page=${args.page}`;
                 separator = '&'
             }
             if (args.size) {
                 url = url + `${separator}size=${args.size}`;
                 separator = '&'
             }
-            if (DEBUG) {
-                console.log(url);
+            console.log(url);
+            if (DEBUG === 1) {
                 return commands;
             }
             else {
-                return got (url, { json: true });
+                return got (url).json();
             }
         }
     },
+    PageOfCommand: {
+        size: obj => obj.itemsPerPage
+    },
     Command: {
-        workflows: (obj, args, context, info) => {
-            console.log(obj);
-            console.log(args);
-            let url = context.url + `commands/${obj.id}/workflows`;
+        id: obj => obj.commandId,
+        ownerId: obj => obj.tenantId,
+        action: obj => obj.command,
+        workflows: (obj, _, context) => {
+            let url = context.url + `commands/${obj.commandId}/workflows`;
+            console.log(url)
             if (DEBUG) {
-                console.log("workflows " + url)
                 return [];
             }
             else {
-                return got (url, { json: true });
+                return got (url).json();
             }
         },
-        runningWorkflow: (obj, args, context, info) => {
-            console.log(obj);
-            console.log(args);
-            if (obj.workflows) {
-                return obj.workflows.find(v => v.startedAt !== undefined && v.endedAt === undefined);
+        runningWorkflow: (obj, _, context) => {
+            // graphql doesn't seem to be meant to deal with calculated fields using other fields
+            // in order to avoid complicated tricks I query the workflows again if asked
+            let url = context.url + `commands/${obj.commandId}/workflows`;
+            console.log(url)
+            if (DEBUG) {
+                return [];
             }
             else {
-                console.log("don't know how to do yet");
+                return got (url).json().then(response => response.find(v => v.startedAt !== undefined && v.endedAt === undefined));
             }
         }
+    },
+    Workflow: {
+        id: obj => obj.workflowId
     }
 };
