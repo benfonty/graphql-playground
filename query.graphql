@@ -1,19 +1,17 @@
 { 
-    commandsQuery(size:10, status: SUCCESS) {
-        size
-        page
+    commandsQuery(ownerId: "4602f6c4-6207-4605-8335-afc2a4041198") {
         commands {
             id 
             createdAt
             ownerId
-            runningWorkflow {
-                id
-            }
             workflows {
                 id
                 operation
                 startedAt
                 endedAt
+                tasks {
+                    id
+                }
             }
         }
     } 

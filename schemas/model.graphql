@@ -1,3 +1,11 @@
+enum Operation {
+  PROVISION,
+  DEPROVISION,
+  ACTIVATE,
+  DEACTIVATE,
+  UPDATE
+}
+
 type Command {
   ownerId: String!
   id: String!
@@ -14,5 +22,31 @@ type Workflow {
   id: String!
   startedAt: DateTime
   endedAt: DateTime
-  operation: String!
+  operation: Operation!
+  tasks: [Task!]
+}
+
+enum TaskStatus {
+  TODO,
+  SCHEDULED,
+  RUNNING,
+  PENDING,
+  EXECUTION_FAILURE,
+  PLANNED,
+  FAILURE,
+  SUCCESS
+}
+
+type Task {
+  id: String!
+  name: String!
+  parameters: String!
+  dependsOn: [String!]
+  operation: Operation!
+  applications: [String!]
+  timestamp: DateTime!
+  status: TaskStatus!
+  retryCount: Int!
+  details: String
+  executeAt: DateTime
 }
