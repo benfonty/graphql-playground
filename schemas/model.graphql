@@ -26,7 +26,7 @@ type Workflow {
   tasks: [Task!]
 }
 
-enum TaskStatus {
+enum Status {
   TODO,
   SCHEDULED,
   RUNNING,
@@ -45,7 +45,15 @@ type Task {
   operation: Operation!
   applications: [String!]
   timestamp: DateTime!
-  status: TaskStatus!
+  status: Status!
+  retryCount: Int
+  details: String
+  executeAt: DateTime
+}
+
+type TaskStatus {
+  timestamp: DateTime!
+  status: Status!
   retryCount: Int
   details: String
   executeAt: DateTime

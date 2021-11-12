@@ -25,6 +25,11 @@ module.exports.resolver = {
             }
             console.log(url);
             return await got (url).json();
+        },
+        taskHistoryQuery: async (_, args, context, info) => {
+            let url = context.url + `tasks/${args.taskId}/history`
+            console.log(url);
+            return await got (url).json();
         }
     },
     PageOfCommand: {

@@ -9,7 +9,6 @@ const merge =  require('lodash/merge');
 // TODO:
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
 // replace running workflow by last workflow (running or next to run or last run)
-// add a task query to have history
 
 const url = "http://localhost:7785/provisioner/";
 
