@@ -1,5 +1,6 @@
 const got = require('got');
 const graphqlFields = require('graphql-fields');
+const { formatResolver: dateTimeformatResolver } = require('./dateTimeResolver');
 
 module.exports.resolver = {
     Query: {
@@ -51,13 +52,13 @@ module.exports.resolver = {
             console.log(url)
             const allWorkflows = await got (url).json();
             return allWorkflows.find(v => v.startedAt !== undefined && v.endedAt === undefined);
-        }
+        },
+        createdAt: dateTimeformatResolver("createdAt")
     },
     Workflow: {
         id: obj => obj.workflowId,
         tasks: async (obj, _, context, info) => {
             const topLevelFields = graphqlFields(info);
-            const fieldsFromTask = ["id", "name", "parameters", "dependsOn", "operation", "applications"];
             const fieldsFromTaskStatus = ["timestamp", "status", "retryCount", "details", "executeAt"];
             const askedFieldsFromTaskStatus = fieldsFromTaskStatus.filter(value => Object.keys(topLevelFields).includes(value));
             let url = context.url + `workflows/${obj.workflowId}/tasks`;
@@ -66,6 +67,15 @@ module.exports.resolver = {
             }
             console.log(url)
             return await got (url).json();
-        } 
+        },
+        startedAt: dateTimeformatResolver("startedAt"),
+        endedAt: dateTimeformatResolver("endedAt")
+    },
+    Task: {
+        timestamp: dateTimeformatResolver("timestamp")
+    },
+    TaskStatus: {
+        timestamp: dateTimeformatResolver("timestamp")
     }
+    
 };

@@ -14,7 +14,11 @@ const dateTimeScalarResolver = new GraphQLScalarType({
     name: 'DateTime',
     description: 'DateTime custom scalar type',
     serialize(value) { // backend response => json value for query response
-      return checkStringCompatibleDateTime(value); // the datetime is stored as a ISO 8601 string.
+      // the datetime is stored as a ISO 8601 string or epoch according to the argument
+      if (typeof value === "number") {
+        return value;
+      }
+      return checkStringCompatibleDateTime(value); 
     },
     parseValue(value) { // as input in a var of the graphql query => backend representation
       return checkStringCompatibleDateTime(value); // the datetime is stored as a ISO 8601 string.
@@ -27,4 +31,14 @@ const dateTimeScalarResolver = new GraphQLScalarType({
     },
   });
 
-module.exports.resolver = { DateTime: dateTimeScalarResolver };
+module.exports = {
+  resolver: { 
+    DateTime: dateTimeScalarResolver 
+  },
+  formatResolver:  field => async (obj, args) => {
+      if (args.format && args.format === 'EPOCH') {
+        return Date.parse(obj[field]);
+      }
+      return obj[field];
+    }
+};

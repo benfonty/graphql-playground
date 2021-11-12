@@ -1,1 +1,6 @@
+enum DateTimeFormat {
+    ISO8601
+    EPOCH
+}
+
 scalar DateTime

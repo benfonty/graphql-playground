@@ -9,7 +9,7 @@ enum Operation {
 type Command {
   ownerId: String!
   id: String!
-  createdAt: DateTime!
+  createdAt(format: DateTimeFormat): DateTime!
   cancelled: Boolean
   payload: String
   action: String!
@@ -20,8 +20,8 @@ type Command {
 type Workflow {
   commandId: String!
   id: String!
-  startedAt: DateTime
-  endedAt: DateTime
+  startedAt(format: DateTimeFormat): DateTime!
+  endedAt(format: DateTimeFormat): DateTime!
   operation: Operation!
   tasks: [Task!]
 }
@@ -44,7 +44,7 @@ type Task {
   dependsOn: [String!]
   operation: Operation!
   applications: [String!]
-  timestamp: DateTime!
+  timestamp(format: DateTimeFormat): DateTime!
   status: Status!
   retryCount: Int
   details: String
@@ -52,7 +52,7 @@ type Task {
 }
 
 type TaskStatus {
-  timestamp: DateTime!
+  timestamp(format: DateTimeFormat): DateTime!
   status: Status!
   retryCount: Int
   details: String
