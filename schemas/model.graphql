@@ -40,7 +40,7 @@ enum TaskStatus {
 type Task {
   id: String!
   name: String!
-  parameters: String!
+  parameters: Json!
   dependsOn: [String!]
   operation: Operation!
   applications: [String!]
