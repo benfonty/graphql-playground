@@ -46,7 +46,7 @@ type Task {
   applications: [String!]
   timestamp: DateTime!
   status: TaskStatus!
-  retryCount: Int!
+  retryCount: Int
   details: String
   executeAt: DateTime
 }

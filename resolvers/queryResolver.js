@@ -52,9 +52,15 @@ module.exports.resolver = {
         id: obj => obj.workflowId,
         tasks: async (obj, _, context, info) => {
             const topLevelFields = graphqlFields(info);
-            // see https://www.apollographql.com/docs/tutorial/mutation-resolvers/ to use async/await
-            console.log(topLevelFields.commands.workflows.tasks);
-            return []
+            const fieldsFromTask = ["id", "name", "parameters", "dependsOn", "operation", "applications"];
+            const fieldsFromTaskStatus = ["timestamp", "status", "retryCount", "details", "executeAt"];
+            const askedFieldsFromTaskStatus = fieldsFromTaskStatus.filter(value => Object.keys(topLevelFields).includes(value));
+            let url = context.url + `workflows/${obj.workflowId}/tasks`;
+            if (askedFieldsFromTaskStatus.length !== 0) {
+                url = context.url + `workflows/${obj.workflowId}/statuses`;
+            }
+            console.log(url)
+            return await got (url).json();
         } 
     }
 };

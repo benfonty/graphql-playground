@@ -6,9 +6,7 @@ const { resolver: queryResolver } = require('./resolvers/queryResolver');
 const merge =  require('lodash/merge');
 
 // TODO:
-// add a subquery to the command to get the workflow by operation
 // add somehow possibility to ask for a Datetime format on query (ISO 8601 or epoch)
-// add task and status
 // replace running workflow by last workflow (running or next to run or last run)
 // introduce json scalar type
 
