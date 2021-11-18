@@ -11,7 +11,7 @@ type Command {
   id: String!
   createdAt(format: DateTimeFormat): DateTime!
   cancelled: Boolean
-  payload: String
+  payload: Json
   action: String!
   workflows: [Workflow!]!
   runningWorkflow: Workflow
@@ -20,8 +20,8 @@ type Command {
 type Workflow {
   commandId: String!
   id: String!
-  startedAt(format: DateTimeFormat): DateTime!
-  endedAt(format: DateTimeFormat): DateTime!
+  startedAt(format: DateTimeFormat): DateTime
+  endedAt(format: DateTimeFormat): DateTime
   operation: Operation!
   tasks: [Task!]
 }
